@@ -4,6 +4,11 @@
             [re-frame.core :as re-frame]
             [status-im.i18n :as i18n]
             [status-im.chat.styles.screen :as style]
+            [status-im.utils.platform :as platform]
+            [status-im.chat.views.toolbar-content :as toolbar-content]
+            [status-im.chat.views.message.message :as message]
+            [status-im.chat.views.message.datemark :as message-datemark]
+            [status-im.chat.views.input.input :as input]
             [status-im.chat.views.actions :as actions]
             [status-im.chat.views.bottom-info :as bottom-info]
             [status-im.chat.views.message.datemark :as message-datemark]
@@ -17,7 +22,19 @@
             [status-im.ui.components.status-bar.view :as status-bar]
             [status-im.ui.components.sync-state.offline :as offline]
             [status-im.ui.components.toolbar.view :as toolbar]
-            [status-im.utils.platform :as platform]))
+            [status-im.ui.components.animation :as animation]))
+
+(defview chat-icon []
+  (letsubs [{:keys [chat-id group-chat name]} [:get-current-chat]]
+    [chat-icon-screen/chat-icon-view-action chat-id group-chat name true]))
+
+(defn toolbar-action [chat-id chat-name group-chat public?]
+  [react/touchable-highlight
+   {:on-press            #(list-selection/show {:title chat-name
+                                                :options (actions/chat-actions chat-id group-chat public?)})
+    :accessibility-label :chat-menu}
+   [react/view style/action
+    [vector-icons/icon :icons/dots-horizontal]]])
 
 (defview add-contact-bar []
   (letsubs [chat-id          [:get-current-chat-id]

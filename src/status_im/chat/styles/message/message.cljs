@@ -1,7 +1,10 @@
 (ns status-im.chat.styles.message.message
   (:require-macros [status-im.utils.styles :refer [defstyle defnstyle]])
   (:require [status-im.ui.components.styles :as styles]
+            [status-im.ui.components.colors :as colors]
             [status-im.constants :as constants]))
+
+(def photo-size 36)
 
 (defstyle style-message-text
   {:font-size 15
@@ -62,7 +65,7 @@
   {:flex-direction :column})
 
 (defn group-message-view
-  [{:keys [outgoing] :as message}]
+  [outgoing]
   (let [align (if outgoing :flex-end :flex-start)]
     {:flex-direction :column
      :width          260
@@ -70,14 +73,18 @@
      :padding-right  10
      :align-items    align}))
 
+(def delivery-status
+  {:align-self    :flex-end
+   :padding-right 56})
+
 (def message-author
-  {:width      36
+  {:width      photo-size
    :align-self :flex-start})
 
 (def photo
-  {:border-radius 18
-   :width        36
-   :height       36})
+  {:border-radius (/ photo-size 2)
+   :width         photo-size
+   :height        photo-size})
 
 (def delivery-view
   {:flex-direction :row
@@ -255,3 +262,10 @@
   {:background-color styles/color-white
    :margin-bottom    margin
    :elevation        (if on-top? 6 5)})
+
+(def message-author-name
+  {:font-size      12
+   :letter-spacing -0.2
+   :padding-bottom 4
+   :color          colors/gray})
+

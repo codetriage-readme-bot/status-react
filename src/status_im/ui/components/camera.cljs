@@ -23,7 +23,7 @@
 (defn request-access-ios [then else]
   (-> (.checkVideoAuthorizationStatus default-camera)
       (.then then)
-      (.catch else)))
+      #(when else (.catch % else))))
 
 (defn camera [props]
   (reagent/create-element default-camera (clj->js (merge {:inverted true} props))))

@@ -229,6 +229,16 @@ class StatusModule extends ReactContextBaseJavaModule implements LifecycleEventL
             } catch (Exception e) {
 
             }
+            try {
+                JSONObject whisperConfig = (JSONObject) customConfig.get("WhisperConfig");
+                if (whisperConfig == null) {
+                    whisperConfig = new JSONObject();
+                }
+                whisperConfig.put("LightClient", true);
+                jsonConfig.put("WhisperConfig", whisperConfig);
+            } catch (Exception e) {
+
+            }
             jsonConfig.put("KeyStoreDir", newKeystoreDir);
 
             config = jsonConfig.toString();
